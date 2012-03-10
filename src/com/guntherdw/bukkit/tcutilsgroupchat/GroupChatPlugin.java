@@ -1,12 +1,7 @@
 package com.guntherdw.bukkit.tcutilsgroupchat;
 
-import com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat;
 import com.guntherdw.bukkit.tweakcraft.Chat.ChatHandler;
 import com.guntherdw.bukkit.tweakcraft.Commands.CommandHandler;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Logger;
-
 import com.guntherdw.bukkit.tweakcraft.TweakcraftUtils;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,8 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 /**
-* @author Edoxile, GuntherDW
-*/
+ * @author Edoxile, GuntherDW
+ */
 public class GroupChatPlugin extends JavaPlugin {
 
     private Logger log = Logger.getLogger("Minecraft");
@@ -24,7 +19,6 @@ public class GroupChatPlugin extends JavaPlugin {
     private PluginDescriptionFile pdfFile;
 
     public void onDisable() {
-
     }
 
     public void onEnable() {

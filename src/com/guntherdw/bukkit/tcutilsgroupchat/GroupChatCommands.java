@@ -1,7 +1,6 @@
 package com.guntherdw.bukkit.tcutilsgroupchat;
 
 import com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat;
-import com.guntherdw.bukkit.tweakcraft.Chat.ChatHandler;
 import com.guntherdw.bukkit.tweakcraft.Chat.ChatMode;
 import com.guntherdw.bukkit.tweakcraft.Commands.Commands.ChatCommands;
 import com.guntherdw.bukkit.tweakcraft.Commands.aCommand;
@@ -10,8 +9,6 @@ import com.guntherdw.bukkit.tweakcraft.TweakcraftUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Method;
 
 /**
  * @author Edoxile, GuntherDW
@@ -27,13 +24,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-        aliases = {"gr"},
-        permissionBase = "chat.mode.group",
-        description = "Group chat options",
-        section = "chat"
+            aliases = {"gr"},
+            permissionBase = "chat.mode.group",
+            description = "Group chat options",
+            section = "chat"
     )
     public boolean group(CommandSender sender, String command, String[] args)
-        throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
+            throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
@@ -43,12 +40,13 @@ public class GroupChatCommands {
 
         try {
             ChatMode cm = tcutils.getChathandler().getChatMode("group");
-            if(cm!=null && cm instanceof com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat) groupChat = (GroupChat) cm;
+            if (cm != null && cm instanceof com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat)
+                groupChat = (GroupChat) cm;
         } catch (ChatModeException e) {
             throw new ChatModeException("ChatMode not found, are you sure this plugin is loaded correctly?");
         }
 
-        if(groupChat == null) {
+        if (groupChat == null) {
             throw new ChatModeException("ChatMode not found, are you sure this plugin is loaded correctly?");
         }
 
@@ -98,7 +96,12 @@ public class GroupChatCommands {
                 } else if (args[0].equals("deny")) {
                     groupChat.declineRecipient(player);
                 } else if (args[0].equals("help")) {
-                    player.sendMessage("Help for /group. Still has to be implemented.");
+                    player.sendMessage(ChatColor.AQUA + "Help for /group. If you want to send some chat use /g or /groupchat.");
+                    player.sendMessage("/group create <topic>   |  create a group (topic obligated)");
+                    player.sendMessage("/group invite <player>  |  invite a player to your group");
+                    player.sendMessage("/group leave            |  leave your current group");
+                    player.sendMessage("/group topic <topic>    |  change the topic of your group");
+                    player.sendMessage("/group help             |  show this help");
                 } else {
                     throw new CommandUsageException("Invalid command usage. See /group help");
                 }
@@ -112,13 +115,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-        aliases = {"g"},
-        permissionBase = "chat.mode.group",
-        description = "Group chat options",
-        section = "chat"
+            aliases = {"g"},
+            permissionBase = "chat.mode.group",
+            description = "Group chat options",
+            section = "chat"
     )
     public boolean groupChat(CommandSender sender, String command, String[] args)
-        throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
+            throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
@@ -128,12 +131,13 @@ public class GroupChatCommands {
 
         try {
             ChatMode cm = tcutils.getChathandler().getChatMode("group");
-            if(cm!=null && cm instanceof com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat) groupChat = (GroupChat) cm;
+            if (cm != null && cm instanceof com.guntherdw.bukkit.tcutilsgroupchat.ChatMode.GroupChat)
+                groupChat = (GroupChat) cm;
         } catch (ChatModeException e) {
             throw new ChatModeException("ChatMode not found, are you sure this plugin is loaded correctly?");
         }
 
-        if(groupChat == null) {
+        if (groupChat == null) {
             throw new ChatModeException("ChatMode not found, are you sure this plugin is loaded correctly?");
         }
 
@@ -143,7 +147,6 @@ public class GroupChatCommands {
             ChatCommands chatCommands = tcutils.getCommandHandler().chatCommands;
             chatCommands.chatCommand(sender, command, "group", args);
             // return this.chatCommand();
-
         } else {
             String text = "";
             for (int i = 0; i < args.length; i++) {

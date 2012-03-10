@@ -32,7 +32,7 @@ public class GroupChat extends ChatMode {
         }
 
 
-        if(getRecipients(sender) != null) {
+        if (getRecipients(sender) != null) {
             super.sendMessage(sender, message);
 
             if (getRecipients(sender).size() < 2)
@@ -47,7 +47,7 @@ public class GroupChat extends ChatMode {
     public Set<Player> getRecipients(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(! playerGroupHashMap.containsKey(player)) return null;
+            if (!playerGroupHashMap.containsKey(player)) return null;
 
             int hash = playerGroupHashMap.get(player);
             if (hash != 0) {
@@ -97,16 +97,17 @@ public class GroupChat extends ChatMode {
     public void addRecipient(String playerName) {
     }
 
-    public void addRecipient(Player player){
+    public void addRecipient(Player player) {
         if (player != null) {
-            if(!inviteMap.containsKey(player)) player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
+            if (!inviteMap.containsKey(player))
+                player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
             int hash = inviteMap.get(player);
-            if(hash != 0) {
+            if (hash != 0) {
                 GroupChatNode chatNode = chatNodeMap.get(hash);
-                if(chatNode!=null){
+                if (chatNode != null) {
                     chatNode.addRecipient(player);
                     String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
-                    for(Player p : chatNode.getRecipients()) {
+                    for (Player p : chatNode.getRecipients()) {
                         p.sendMessage(playerName + ChatColor.AQUA + " was added to your GroupChat.");
                     }
                     player.sendMessage(ChatColor.AQUA + "GroupChat topic: " + chatNode.getTopic());
@@ -126,7 +127,7 @@ public class GroupChat extends ChatMode {
 
     public void removeRecipient(Player player) {
         if (player != null) {
-            if(!playerGroupHashMap.containsKey(player)) return;
+            if (!playerGroupHashMap.containsKey(player)) return;
             int hash = playerGroupHashMap.get(player);
             if (hash != 0) {
                 GroupChatNode chatNode = chatNodeMap.get(hash);
@@ -142,16 +143,16 @@ public class GroupChat extends ChatMode {
         }
     }
 
-    public void addInvite(Player inviter, Player invitee){
+    public void addInvite(Player inviter, Player invitee) {
         int hash = playerGroupHashMap.get(inviter);
-        if(hash == 0){
+        if (hash == 0) {
             inviter.sendMessage(ChatColor.RED + "Create a GroupChat before you invite people!");
         } else {
             GroupChatNode chatNode = chatNodeMap.get(hash);
-            if(chatNode != null){
+            if (chatNode != null) {
                 String inviterName = plugin.getPlayerColor(inviter.getName(), false) + inviter.getName();
                 String inviteeName = plugin.getPlayerColor(invitee.getName(), false) + invitee.getName();
-                for(Player p : chatNode.getRecipients()){
+                for (Player p : chatNode.getRecipients()) {
                     p.sendMessage(inviterName + ChatColor.AQUA + " invited " + inviteeName + ChatColor.AQUA + " to this GroupChat.");
                 }
                 inviteMap.put(invitee, hash);
@@ -161,7 +162,7 @@ public class GroupChat extends ChatMode {
         }
     }
 
-    public void declineRecipient(Player player){
+    public void declineRecipient(Player player) {
         inviteMap.remove(player);
     }
 
@@ -198,7 +199,7 @@ public class GroupChat extends ChatMode {
         player.sendMessage(ChatColor.RED + "Something went wrong. You're probably not in a GroupChat at the moment.");
     }
 
-    public boolean hasGroupChat(Player player){
+    public boolean hasGroupChat(Player player) {
         return playerGroupHashMap.containsKey(player);
     }
 
