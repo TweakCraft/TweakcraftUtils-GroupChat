@@ -24,13 +24,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-            aliases = {"gr"},
-            permissionBase = "chat.mode.group",
-            description = "Group chat options",
-            section = "chat"
+        aliases = {"gr"},
+        permissionBase = "chat.mode.group",
+        description = "Group chat options",
+        section = "chat"
     )
     public boolean group(CommandSender sender, String command, String[] args)
-            throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
+        throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
@@ -67,12 +67,12 @@ public class GroupChatCommands {
                         throw new CommandUsageException("Too few arguments passed to /group create.");
                     }
                 } else if (args[0].equals("invite")) {
-                    if (args.length == 1) {
-                        Player otherPlayer = tcutils.findPlayerasPlayer(args[0]);
+                    if (args.length == 2) {
+                        Player otherPlayer = tcutils.findPlayerasPlayer(args[1]);
                         if (otherPlayer != null) {
                             groupChat.addInvite(player, otherPlayer);
                         } else {
-                            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found!");
+                            player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found!");
                         }
                     } else {
                         throw new CommandUsageException("Too many arguments passed to /group invite.");
@@ -115,13 +115,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-            aliases = {"g"},
-            permissionBase = "chat.mode.group",
-            description = "Group chat options",
-            section = "chat"
+        aliases = {"g"},
+        permissionBase = "chat.mode.group",
+        description = "Group chat options",
+        section = "chat"
     )
     public boolean groupChat(CommandSender sender, String command, String[] args)
-            throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
+        throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
