@@ -97,7 +97,7 @@ public class GroupChat extends ChatMode {
     public void addRecipient(String playerName) {
     }
 
-    public void addRecipient(Player player) {
+    public void acceptRecipient(Player player) {
         if (player != null) {
             if (!inviteMap.containsKey(player))
                 player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
@@ -106,6 +106,7 @@ public class GroupChat extends ChatMode {
                 GroupChatNode chatNode = chatNodeMap.get(hash);
                 if (chatNode != null) {
                     chatNode.addRecipient(player);
+                    playerGroupHashMap.put(player, chatNode.hashCode());
                     String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
                     for (Player p : chatNode.getRecipients()) {
                         p.sendMessage(playerName + ChatColor.AQUA + " was added to your GroupChat.");
@@ -132,6 +133,11 @@ public class GroupChat extends ChatMode {
             if (hash != 0) {
                 GroupChatNode chatNode = chatNodeMap.get(hash);
                 if (chatNode != null) {
+                    String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
+                    for (Player p : chatNode.getRecipients()) {
+                        p.sendMessage(playerName + ChatColor.AQUA + " left this GroupChat.");
+                    }
+
                     chatNode.removePlayer(player);
                     if (chatNode.isEmpty()) {
                         chatNodeMap.remove(hash);
@@ -156,6 +162,8 @@ public class GroupChat extends ChatMode {
                     p.sendMessage(inviterName + ChatColor.AQUA + " invited " + inviteeName + ChatColor.AQUA + " to this GroupChat.");
                 }
                 inviteMap.put(invitee, hash);
+                invitee.sendMessage(inviterName + ChatColor.AQUA + " invited you to join their GroupChat '" + chatNode.getTopic() + "'!");
+                invitee.sendMessage(ChatColor.AQUA + "Use /group accept to accept and /group decline to decline.");
             } else {
                 inviter.sendMessage(ChatColor.RED + "Something went terribly wrong :(.");
             }
