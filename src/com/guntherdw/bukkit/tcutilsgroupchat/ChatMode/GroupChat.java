@@ -33,6 +33,8 @@ public class GroupChat extends ChatMode {
 
 
         if (getRecipients(sender) != null) {
+            String playerName = plugin.getPlayerColor(sender.getName(), false) + sender.getName();
+            plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
             super.sendMessage(sender, message);
 
             if (getRecipients(sender).size() < 2)
@@ -66,6 +68,8 @@ public class GroupChat extends ChatMode {
 
     public boolean broadcastMessage(CommandSender sender, String message) {
         Set<Player> recipients = getRecipients(sender);
+        String playerName = plugin.getPlayerColor(sender.getName(), false) + sender.getName();
+        plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
         for (Player player : recipients) {
             player.sendMessage(message);
             if (recipients.size() < 2) {
