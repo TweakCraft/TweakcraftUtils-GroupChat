@@ -215,6 +215,25 @@ public class GroupChat extends ChatMode {
         return playerGroupHashMap.containsKey(player);
     }
 
+    /**
+     * TODO: Use these functions Edoxile!
+     */
+
+    public String getLoggingFormatString() {
+        String name = this.chatModeName == null ? getClass().getSimpleName() : chatModeName;
+        return name + ": <%1$s> %2$s";
+    }
+
+    public String getLoggingFormatStringNoPlayerTag() {
+        String name = this.chatModeName == null ? getClass().getSimpleName() : chatModeName;
+        return name + ": %1$s";
+    }
+
+    public String getChatFormatString() {
+        String prefix = getPrefix();
+        return (prefix != null ? prefix + ": " : "") + "[%1$s] %2$s";
+    }
+
     private class GroupChatNode {
         private String topic;
         public int hash;

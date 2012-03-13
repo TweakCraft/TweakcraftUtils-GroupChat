@@ -24,13 +24,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-            aliases = {"gr"},
-            permissionBase = "chat.mode.group",
-            description = "Group chat options",
-            section = "chat"
+        aliases = {"gr", "group"},
+        permissionBase = "chat.mode.group",
+        description = "Group chat options",
+        section = "chat"
     )
     public boolean group(CommandSender sender, String command, String[] args)
-            throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
+        throws PermissionsException, CommandSenderException, CommandUsageException, CommandException, ChatModeException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
@@ -116,13 +116,13 @@ public class GroupChatCommands {
     }
 
     @aCommand(
-            aliases = {"g"},
-            permissionBase = "chat.mode.group",
-            description = "Group chat options",
-            section = "chat"
+        aliases = {"g"},
+        permissionBase = "chat.mode.group",
+        description = "Group chat options",
+        section = "chat"
     )
     public boolean groupChat(CommandSender sender, String command, String[] args)
-            throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
+        throws PermissionsException, CommandSenderException, CommandUsageException, ChatModeException, CommandException {
 
         if (!tcutils.getConfigHandler().enableGroupChat) {
             throw new CommandUsageException("GroupChat not enabled!");
