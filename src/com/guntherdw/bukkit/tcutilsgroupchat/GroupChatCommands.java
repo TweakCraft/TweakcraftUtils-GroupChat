@@ -10,6 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Set;
+
 /**
  * @author Edoxile, GuntherDW
  */
@@ -79,6 +81,19 @@ public class GroupChatCommands {
                     }
                 } else if (args[0].equals("leave")) {
                     groupChat.removeRecipient(player);
+                } else if (args[0].equals("list")) {
+                    Set<Player> players = groupChat.getRecipients(player);
+                    if(players == null || players.isEmpty()){
+                        player.sendMessage(ChatColor.RED + "You're not in a group yet!");
+                    } else {
+                        String list = "";
+                        for(Player p : players){
+                            list += tcutils.getPlayerColor(p.getName(), false) + p.getName() + ChatColor.AQUA + ", ";
+                        }
+                        list = list.substring(0, list.length() - 2);
+                        player.sendMessage(ChatColor.AQUA + "Currently in your ChatGroup '" + groupChat.getTopic(player) + "':");
+                        player.sendMessage(list);
+                    }
                 } else if (args[0].equals("topic")) {
                     if (args.length > 1) {
                         String topic = "";
@@ -102,6 +117,7 @@ public class GroupChatCommands {
                     player.sendMessage("/group accept - accept a group invitation");
                     player.sendMessage("/group decline - decline a group invitation");
                     player.sendMessage("/group leave - leave your current group");
+                    player.sendMessage("/group list - List all the people inside your group");
                     player.sendMessage("/group topic - view or change the topic of your group");
                 } else {
                     throw new CommandUsageException(ChatColor.RED + "Invalid command usage. See /group help");
