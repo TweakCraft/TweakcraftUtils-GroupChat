@@ -89,7 +89,7 @@ public class GroupChatCommands {
                         }
                         groupChat.setTopic(player, topic);
                     } else {
-                        groupChat.getTopic(player);
+                        player.sendMessage(ChatColor.AQUA + "Topic: " + groupChat.getTopic(player));
                     }
                 } else if (args[0].equals("accept")) {
                     groupChat.acceptRecipient(player);

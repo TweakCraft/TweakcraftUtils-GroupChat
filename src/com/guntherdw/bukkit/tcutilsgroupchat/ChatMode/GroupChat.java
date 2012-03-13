@@ -243,7 +243,7 @@ public class GroupChat extends ChatMode {
         if (hash != 0) {
             GroupChatNode chatNode = chatNodeMap.get(hash);
             if (chatNode != null) {
-                player.sendMessage(ChatColor.AQUA + "Topic: " + chatNode.getTopic());
+                return chatNode.getTopic();
             }
         }
         throw new CommandException("You're currently not in a Group!");
