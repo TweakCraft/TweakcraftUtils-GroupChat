@@ -97,12 +97,12 @@ public class GroupChatCommands {
                     groupChat.declineRecipient(player);
                 } else if (args[0].equals("help")) {
                     player.sendMessage(ChatColor.AQUA + "Help for /group. If you want to send some chat use /g or /groupchat.");
-                    player.sendMessage("/group create <topic>   |  create a group (topic obligated)");
-                    player.sendMessage("/group invite <player>  |  invite a player to your group");
-                    player.sendMessage("/group accept           |  accept a group invitation");
-                    player.sendMessage("/group decline          |  decline a group invitation");
-                    player.sendMessage("/group leave            |  leave your current group");
-                    player.sendMessage("/group topic <topic>    |  change the topic of your group");
+                    player.sendMessage("/group create <topic> - create a group (topic obligated)");
+                    player.sendMessage("/group invite <player> - invite a player to your group");
+                    player.sendMessage("/group accept - accept a group invitation");
+                    player.sendMessage("/group decline - decline a group invitation");
+                    player.sendMessage("/group leave - leave your current group");
+                    player.sendMessage("/group topic <topic> - change the topic of your group");
                 } else {
                     throw new CommandUsageException(ChatColor.RED + "Invalid command usage. See /group help");
                 }

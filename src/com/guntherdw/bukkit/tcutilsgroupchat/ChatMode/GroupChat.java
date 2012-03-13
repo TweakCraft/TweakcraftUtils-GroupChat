@@ -69,7 +69,8 @@ public class GroupChat extends ChatMode {
     public boolean broadcastMessage(CommandSender sender, String message) {
         Set<Player> recipients = getRecipients(sender);
         String playerName = plugin.getPlayerColor(sender.getName(), false) + sender.getName();
-        plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
+        // Apparently there is already a logging feature, so no need to log it again.
+        // plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
         for (Player player : recipients) {
             player.sendMessage(message);
             if (recipients.size() < 2) {
@@ -194,6 +195,8 @@ public class GroupChat extends ChatMode {
         GroupChatNode chatNode = new GroupChatNode(player, topic);
         chatNodeMap.put(chatNode.hashCode(), chatNode);
         playerGroupHashMap.put(player, chatNode.hashCode());
+        player.sendMessage(ChatColor.AQUA + "GroupChat with topic '"+topic+"' successfully created!");
+        player.sendMessage(ChatColor.AQUA + "You can now invite people with /group invite <name>.");
     }
 
     public void setTopic(Player player, String topic) {
