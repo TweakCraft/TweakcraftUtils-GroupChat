@@ -89,7 +89,7 @@ public class GroupChatCommands {
                         }
                         groupChat.setTopic(player, topic);
                     } else {
-                        throw new CommandUsageException("Too few arguments passed to /group topic");
+                        groupChat.getTopic(player);
                     }
                 } else if (args[0].equals("accept")) {
                     groupChat.acceptRecipient(player);
@@ -102,7 +102,7 @@ public class GroupChatCommands {
                     player.sendMessage("/group accept - accept a group invitation");
                     player.sendMessage("/group decline - decline a group invitation");
                     player.sendMessage("/group leave - leave your current group");
-                    player.sendMessage("/group topic <topic> - change the topic of your group");
+                    player.sendMessage("/group topic - view or change the topic of your group");
                 } else {
                     throw new CommandUsageException(ChatColor.RED + "Invalid command usage. See /group help");
                 }

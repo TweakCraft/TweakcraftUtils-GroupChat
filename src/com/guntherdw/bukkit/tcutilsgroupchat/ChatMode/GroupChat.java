@@ -2,6 +2,7 @@ package com.guntherdw.bukkit.tcutilsgroupchat.ChatMode;
 
 import com.guntherdw.bukkit.tweakcraft.Chat.ChatHandler;
 import com.guntherdw.bukkit.tweakcraft.Chat.ChatMode;
+import com.guntherdw.bukkit.tweakcraft.Exceptions.CommandException;
 import com.guntherdw.bukkit.tweakcraft.TweakcraftUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -235,6 +236,17 @@ public class GroupChat extends ChatMode {
     public String getChatFormatString() {
         String prefix = getPrefix();
         return (prefix != null ? prefix + ": " : "") + "[%1$s] %2$s";
+    }
+    
+    public String getTopic(Player player) throws CommandException {
+        int hash = playerGroupHashMap.get(player);
+        if (hash != 0) {
+            GroupChatNode chatNode = chatNodeMap.get(hash);
+            if (chatNode != null) {
+                player.sendMessage(ChatColor.AQUA + "Topic: " + chatNode.getTopic());
+            }
+        }
+        throw new CommandException("You're currently not in a Group!");
     }
 
     private class GroupChatNode {
