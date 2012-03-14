@@ -1,4 +1,4 @@
 name: TweakcraftUtils-GroupChat
 main: com.guntherdw.bukkit.tcutilsgroupchat.GroupChatPlugin
-version: 0.1b
+version: 0.1c
 depend: [ 'TweakcraftUtils' ]
