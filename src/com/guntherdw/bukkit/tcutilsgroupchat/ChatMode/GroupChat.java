@@ -34,8 +34,6 @@ public class GroupChat extends ChatMode {
 
 
         if (getRecipients(sender) != null) {
-            String playerName = plugin.getPlayerColor(sender.getName(), false) + sender.getName();
-            plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
             super.sendMessage(sender, message);
 
             if (getRecipients(sender).size() < 2)
@@ -68,15 +66,19 @@ public class GroupChat extends ChatMode {
     }
 
     public boolean broadcastMessage(CommandSender sender, String message) {
-        Set<Player> recipients = getRecipients(sender);
-        String playerName = plugin.getPlayerColor(sender.getName(), false) + sender.getName();
-        // Apparently there is already a logging feature, so no need to log it again.
-        // plugin.getLogger().info("GROUP: <" + playerName + "> " + message);
-        for (Player player : recipients) {
-            player.sendMessage(message);
-            if (recipients.size() < 2) {
-                sender.sendMessage(ChatColor.GOLD + "No one can hear you!");
+        if (sender instanceof Player) {
+            GroupChatNode chatNode = getChatNode((Player) sender);
+            if (chatNode != null) {
+                if (chatNode.broadcastMessage((Player) sender, message)) {
+                    sender.sendMessage(ChatColor.GOLD + "No one can hear you!");
+                } else {
+                    return true;
+                }
+            } else {
+                sender.sendMessage("You're not in a GroupChat yet!");
             }
+        } else {
+            sender.sendMessage("How did you get here?!");
         }
         return false;
     }
@@ -99,39 +101,6 @@ public class GroupChat extends ChatMode {
         return plugin.getConfigHandler().enableGroupChat;
     }
 
-    @Override
-    public void addRecipient(String playerName) {
-    }
-
-    public void acceptRecipient(Player player) {
-        if (player != null) {
-            if (!inviteMap.containsKey(player))
-                player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
-            int hash = inviteMap.get(player);
-            if (hash != 0) {
-                GroupChatNode chatNode = chatNodeMap.get(hash);
-                if (chatNode != null) {
-                    chatNode.addRecipient(player);
-                    playerGroupHashMap.put(player, chatNode.hashCode());
-                    String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
-                    for (Player p : chatNode.getRecipients()) {
-                        p.sendMessage(playerName + ChatColor.AQUA + " was added to your GroupChat.");
-                    }
-                    player.sendMessage(ChatColor.AQUA + "GroupChat topic: " + chatNode.getTopic());
-                    inviteMap.remove(player);
-                } else {
-                    player.sendMessage(ChatColor.RED + "The GroupChat that you were invited to has since been removed.");
-                }
-            } else {
-                player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
-            }
-        }
-    }
-
-    @Override
-    public void removeRecipient(String playerName) {
-    }
-
     public void removeRecipient(Player player) {
         if (player != null) {
             if (!playerGroupHashMap.containsKey(player)) return;
@@ -139,7 +108,7 @@ public class GroupChat extends ChatMode {
             if (hash != 0) {
                 GroupChatNode chatNode = chatNodeMap.get(hash);
                 if (chatNode != null) {
-                    String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
+                    String playerName = plugin.getPlayerColor(player.getName(), false) + player.getDisplayName();
                     for (Player p : chatNode.getRecipients()) {
                         p.sendMessage(playerName + ChatColor.AQUA + " left this GroupChat.");
                     }
@@ -176,43 +145,64 @@ public class GroupChat extends ChatMode {
         }
     }
 
+    public void acceptRecipient(Player player) {
+        if (player != null) {
+            if (!inviteMap.containsKey(player))
+                player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
+            int hash = inviteMap.get(player);
+            if (hash != 0) {
+                GroupChatNode chatNode = chatNodeMap.get(hash);
+                if (chatNode != null) {
+                    chatNode.addRecipient(player);
+                    playerGroupHashMap.put(player, chatNode.hashCode());
+                    String playerName = plugin.getPlayerColor(player.getName(), false) + player.getName();
+                    for (Player p : chatNode.getRecipients()) {
+                        p.sendMessage(playerName + ChatColor.AQUA + " was added to your GroupChat.");
+                    }
+                    player.sendMessage(ChatColor.AQUA + "GroupChat topic: " + chatNode.getTopic());
+                    inviteMap.remove(player);
+                } else {
+                    player.sendMessage(ChatColor.RED + "The GroupChat that you were invited to has since been removed.");
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + "You don't have any open invites from a GroupChat yet!");
+            }
+        }
+    }
+
     public void declineRecipient(Player player) {
         inviteMap.remove(player);
     }
 
-    @Override
-    public Set<String> getSubscribers() {
-        Set<String> set = new HashSet<String>();
-        for (GroupChatNode node : chatNodeMap.values()) {
-            for (Player p : node.getRecipients()) {
-                set.add(p.getName());
-            }
-        }
-        return set;
-    }
+    /**
+     * Removing method because of faulty usage (@GuntherDW)
+     *
+     * @Override public Set<String> getSubscribers() {
+     * Set<String> set = new HashSet<String>();
+     * for (GroupChatNode node : chatNodeMap.values()) {
+     * for (Player p : node.getRecipients()) {
+     * set.add(p.getName());
+     * }
+     * }
+     * return set;
+     * }
+     */
 
     public void create(Player player, String topic) {
         removeRecipient(player);
         GroupChatNode chatNode = new GroupChatNode(player, topic);
         chatNodeMap.put(chatNode.hashCode(), chatNode);
         playerGroupHashMap.put(player, chatNode.hashCode());
-        player.sendMessage(ChatColor.AQUA + "GroupChat with topic '"+topic+"' successfully created!");
+        player.sendMessage(ChatColor.AQUA + "GroupChat with topic '" + topic + "' successfully created!");
         player.sendMessage(ChatColor.AQUA + "You can now invite people with /group invite <name>.");
     }
 
-    public void setTopic(Player player, String topic) {
+    public GroupChatNode getChatNode(Player player) {
         int hash = playerGroupHashMap.get(player);
-        if (hash != 0) {
-            GroupChatNode chatNode = chatNodeMap.get(hash);
-            if (chatNode != null) {
-                chatNode.setTopic(topic);
-                for (Player p : chatNode.getRecipients()) {
-                    p.sendMessage(plugin.getPlayerColor(player.getName(), false) + player.getName() + ChatColor.AQUA + " changed the topic to: " + topic);
-                }
-                return;
-            }
+        if (hash == 0) {
+            return null;
         }
-        player.sendMessage(ChatColor.RED + "Something went wrong. You're probably not in a GroupChat at the moment.");
+        return chatNodeMap.get(hash);
     }
 
     public boolean hasGroupChat(Player player) {
@@ -237,7 +227,7 @@ public class GroupChat extends ChatMode {
         String prefix = getPrefix();
         return (prefix != null ? prefix + ": " : "") + "[%1$s] %2$s";
     }
-    
+
     public String getTopic(Player player) throws CommandException {
         int hash = playerGroupHashMap.get(player);
         if (hash != 0) {
@@ -293,6 +283,14 @@ public class GroupChat extends ChatMode {
         public boolean removePlayer(Player player) {
             recipients.remove(player);
             return recipients.isEmpty();
+        }
+
+        public boolean broadcastMessage(Player player, String message) {
+            message = String.format(getChatFormatString(), player.getDisplayName(), message);
+            for (Player p : recipients) {
+                p.sendMessage(message);
+            }
+            return recipients.size() == 1;
         }
     }
 }
