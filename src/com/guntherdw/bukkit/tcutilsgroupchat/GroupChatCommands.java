@@ -102,7 +102,15 @@ public class GroupChatCommands {
                                 topic += " ";
                             topic += args[i];
                         }
-                        groupChat.getChatNode(player).setTopic(topic);
+                        GroupChat.GroupChatNode chatNode = groupChat.getChatNode(player);
+                        if(chatNode != null){
+                            chatNode.setTopic(topic);
+                            for(Player p : chatNode.getRecipients()){
+                                p.sendMessage(player.getDisplayName() + ChatColor.AQUA + " changed the topic into: '" + topic + "'.");
+                            }
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You're not in a group yet!");
+                        }
                     } else {
                         player.sendMessage(ChatColor.AQUA + "Topic: " + groupChat.getTopic(player));
                     }
