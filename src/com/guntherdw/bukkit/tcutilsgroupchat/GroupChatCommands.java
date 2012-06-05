@@ -102,7 +102,7 @@ public class GroupChatCommands {
                                 topic += " ";
                             topic += args[i];
                         }
-                        groupChat.setTopic(player, topic);
+                        groupChat.getChatNode(player).setTopic(topic);
                     } else {
                         player.sendMessage(ChatColor.AQUA + "Topic: " + groupChat.getTopic(player));
                     }

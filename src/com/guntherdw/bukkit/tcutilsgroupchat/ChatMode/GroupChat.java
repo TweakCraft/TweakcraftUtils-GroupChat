@@ -239,7 +239,7 @@ public class GroupChat extends ChatMode {
         throw new CommandException("You're currently not in a Group!");
     }
 
-    private class GroupChatNode {
+    public class GroupChatNode {
         private String topic;
         public int hash;
         private List<Player> recipients = new ArrayList<Player>();
